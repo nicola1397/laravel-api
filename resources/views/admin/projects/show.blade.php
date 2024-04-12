@@ -25,8 +25,11 @@
         <span class="d-inline-block fs-5">{!! $project->type->getBadge() !!}</span>
 
         <h2>Tecnologie</h2>
-        <span class="d-inline-block fs-5">Placeholder          
-        </span>
+        @foreach ($project->technologies as $technology)
+                
+        <span class="d-inline-block fs-5"> {!! $technology->getBadge() !!}  </span>
+            @endforeach      
+       
 
         <h2>Descrizione</h2>
         <p>{{ $project->description }}</p>

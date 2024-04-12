@@ -49,7 +49,7 @@
                     <label for="technology_id" class="form-label">Tecnologie</label><br>
                                    
                         @foreach($technologies as $technology)
-                        <input class="me-2 ms-3" type="checkbox" {{ $technology->id == old('technology_id', $project->technology_id) ? 'selected' : ''}} value="{{ $technology->id }}">{!! $technology->getBadge() !!}
+                        <input class="me-2 ms-3 form-check-input form-control @error('technologies') is-invalid @enderror" type="checkbox" value="{{ $technology->id }}" name="technologies[]"  {{ in_array($technology->id, old('technologies', $project_technologies_id ?? [])) ? 'checked' : '' }} >{!! $technology->getBadge() !!}</input>
                         @endforeach
                     
 
@@ -61,7 +61,7 @@
                     
                 <div class="mb-3">
                 <label for="image" class="form-label">Inserisci immagine</label>
-                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
                 
                 @error('image')
                         <div class="invalid-feedback">{{ $message }}</div>

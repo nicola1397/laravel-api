@@ -12,7 +12,7 @@ use App\Models\Technology;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Arr;
 
 class ProjectController extends Controller
 {
@@ -56,8 +56,11 @@ class ProjectController extends Controller
         $new_project->fill($data);
         $new_project->image_url = Storage::put('uploads/projects', $data['image']);
         $new_project->slug = Str::slug($new_project->title);
-        $new_project->save();
 
+        $new_project->save();
+        if (Arr::exists($data, 'technologies')) {
+            $new_project->technologies()->attach($data['technologies']);
+        }
         Mail::to('utente@mail.it')->send(new CreatedProject());
 
 
@@ -85,8 +88,10 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
+        $technologies = Technology::all();
 
-        return view('admin.projects.edit', compact('project', 'types'));
+        return view('admin.projects.edit', compact('project', 'types', 'technologies'));
+
     }
 
     /**
