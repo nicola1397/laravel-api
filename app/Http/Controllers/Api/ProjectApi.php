@@ -10,10 +10,16 @@ class ProjectApi extends Controller
 {
     public function index()
     {
-        $projects = Project::all()->paginate(10);
-        return response()->json([
-            'success' => true,
-            'results' => $projects
-        ]);
+        $projects = Project::select(['id', 'type_id', 'title', 'image_url'])->with(['technologies', 'type'])->paginate();
+
+        foreach ($projects as $project) {
+            $project->image = asset('/storage' . "/" . $project->image_url);
+        }
+        return response()->json(
+            [
+                'success' => true,
+                'results' => $projects
+            ]
+        );
     }
 }
